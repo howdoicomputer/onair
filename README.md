@@ -12,7 +12,7 @@ The client is responsible for:
 * Receiving VoiceStateUpdate events from the Discord API to check whether or not I have muted or unmuted myself in the Discord client itself.
 * Sending my 'mute/unmuted' state to an OnAir server in accordance with the aforementioned client responsiblities.
 
-The server, which runs on a Raspberry Pi Zero, is setup to receive a "speaking" value. If that value is true, the server will then control the GPIO pins that are hooked up to a power relay that a physical "on air" sign is plugged into. If I'm on air then the sign will receive power and thus light up.
+The server, which runs on a Raspberry Pi Zero, is setup to receive a "speaking" value. If that value is true, the server will then send a 'power on' signal to this [IoT relay](https://dlidirect.com/products/iot-power-relay) that a physical "on air" sign is plugged into. If I'm on air then the sign will receive power and thus light up.
 
 # Installing
 
@@ -63,6 +63,10 @@ time="2019-01-21T20:27:39-08:00" level=info msg="Muted on Discord."
 ```
 
 If you want to run OnAir on boot then you might want to look into [nssm](https://nssm.cc/).
+
+# Current Status
+
+The client works flawlessly and the server works as in it'll receive a speaking value. However, I need to still solder everything up for the sign.
 
 # Why
 
