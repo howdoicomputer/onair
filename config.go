@@ -8,6 +8,7 @@ type mikeConfig struct {
 	Channels   uint32
 	SampleRate uint32
 	NoMMap     uint32
+	BufferSize uint32
 }
 
 type onAirConfig struct {

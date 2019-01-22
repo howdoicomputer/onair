@@ -47,6 +47,7 @@ func mikeCheck() {
 	deviceConfig.Channels = config.Mike.Channels
 	deviceConfig.SampleRate = config.Mike.SampleRate
 	deviceConfig.Alsa.NoMMap = config.Mike.NoMMap
+	deviceConfig.BufferSizeInMilliseconds = config.Mike.BufferSize
 
 	var capturedSampleCount uint32
 	var audioReceived bool
@@ -75,7 +76,7 @@ func mikeCheck() {
 	}
 	device, err := malgo.InitDevice(ctx.Context, malgo.Capture, nil, deviceConfig, captureCallbacks)
 	if err != nil {
-		log.Error("Could not initiate microphone: ", err)
+		log.Error("Could not initialize microphone: ", err)
 		os.Exit(1)
 	}
 
@@ -87,10 +88,19 @@ func mikeCheck() {
 
 	time.Sleep(time.Second)
 
+	lastMikeStatus := mikeOn
 	if audioReceived {
 		mikeOn = true
+
+		if lastMikeStatus != mikeOn {
+			log.Info("Mic is unmuted.")
+		}
 	} else {
 		mikeOn = false
+
+		if lastMikeStatus != mikeOn {
+			log.Info("Mic is muted.")
+		}
 	}
 
 	device.Uninit()
