@@ -28,7 +28,7 @@ func discordEventReceiver() {
 	defer dg.Close()
 }
 
-// If Discord let's us know if we've been muted or unmuted
+// If Discord let's us know that we've been muted or unmuted
 // then write the mute state to a file and set discordUnmuted to
 // the appropriate value.
 //
@@ -54,7 +54,7 @@ func muting(s *discordgo.Session, v *discordgo.VoiceStateUpdate) {
 
 // Discord's API is entirely push based. You cannot query for information.
 // Therefore, there is no way to tell if you're muted or unmuted before
-// a VoiceStateUpdate is emitted. I.e, you muted yourself and then quit
+// a VoiceStateUpdate event is emitted. I.e, if you muted yourself and then quit
 // Discord then there would be no way for OnAir to know that you're muted.
 //
 // Let's keep track of that muted state in a file.

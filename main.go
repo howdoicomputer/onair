@@ -37,6 +37,10 @@ func activityTimer(client *rpc.Client) {
 					if err != nil {
 						log.Fatal("Could not call Speaking function on OnAir RPC server: ", err)
 					}
+
+					if !reply {
+						log.Error("Did not receive a positive ACK from server.")
+					}
 				}
 			case <-quit:
 				ticker.Stop()
