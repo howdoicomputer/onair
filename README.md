@@ -20,7 +20,7 @@ I would be super surprised if anyone else got any use out of this thing but *maa
 
 ## Client Prereqs
 
-* A Windows host. While I don't *think* there is anything that stops this from being run on Linux, I'm only developing this on Windows for now because that is what I'm gaming on.
+* A Windows host. There is Windows specific code in here. I'd have to put in a little bit of work to make this run on macOS or Linux.
 * Golang over `v1.11` installed.
 * GCC installed on said Windows host. This project relies on [malgo](https://github.com/gen2brain/malgo) and that project relies on [cgo](https://github.com/golang/go/wiki/cgo#windows).
 
@@ -36,6 +36,14 @@ go mod vendor
 go build
 go build -o onair_server.exe ./server/server.go
 ```
+
+## Configuration
+
+OnAir requires a configuration file to run.
+
+That configuration file is located at: `~/AppData/Local/OnAir/config.toml`
+
+So you'll need to make that directory and create a configuration file that is similar to the `config.example.toml` file included with this repository.
 
 ## Running
 
