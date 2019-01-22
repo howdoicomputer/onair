@@ -4,7 +4,7 @@ OnAir is an application that monitors microphone activity and Discord mute/unmut
 
 # How it Functions
 
-There are two parts of OnAir: a server and a client.
+There are two parts of OnAir: a server and a client. Communication between the two are done via RPC calls.
 
 The client is responsible for:
 
