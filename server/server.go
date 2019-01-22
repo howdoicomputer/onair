@@ -22,6 +22,8 @@ type OnAir int
 
 // Speaking Receiver for a speaking event.
 func (o *OnAir) Speaking(speaking bool, ack *bool) error {
+	*ack = true
+
 	if speaking {
 		log.Info("Speaking detected.")
 	}
