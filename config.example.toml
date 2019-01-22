@@ -1,0 +1,12 @@
+[Discord]
+token = "foobar"
+
+[OnAir]
+rpcServerAddr        = "localhost:42586"
+activityPollDuration = 2
+
+[Mike]
+pollDuration = 5
+channels     = 1
+sampleRole   = 48000
+NoMMap       = 1
