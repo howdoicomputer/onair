@@ -31,10 +31,15 @@ If you need to install golang or gcc, then I highly recommend using [scoop](http
 To build inside PowerShell,
 
 ```
-$env:GO111MODULE="on"
 go mod vendor
 go build
-go build -o onair_server.exe ./server/server.go
+
+$env:GO111MODULE="on"
+$env:GOOS="linux"
+$env:GOARCH="arm"
+$env:GOARM="6"
+
+go build -o onair_server ./server/server.go
 ```
 
 ## Configuration
@@ -45,13 +50,21 @@ That configuration file is located at: `~/AppData/Local/OnAir/config.toml`
 
 So you'll need to make that directory and create a configuration file that is similar to the `config.example.toml` file included with this repository.
 
+## Pin Out
+
+The server uses [gobot](https://gobot.io/) to write out to the pin that is sending the input signal to the IoT relay and I'm hardcoding to physical pin 7 in the server code.
+
+If you're building this at home, then the pinout of the Raspberry Pi is pretty easy to verify using [pinout.xyz](https://pinout.xyz/#).
+
 ## Running
 
-Start the server in one console tab,
+Start the server on the Raspi,
 
 ```
-onair master *% $ .\onair_server.exe
-time="2019-01-21T20:00:54-08:00" level=info msg="Server started."
+pi@raspberrypi:~ $ ./onair_server
+INFO[0000] Server started.
+INFO[0060] Speaking detected.
+INFO[0062] Speaking detected.
 ```
 
 In another console tab,
@@ -62,11 +75,7 @@ time="2019-01-21T20:26:37-08:00" level=info msg="Last known Discord muted/unmute
 time="2019-01-21T20:27:39-08:00" level=info msg="Muted on Discord."
 ```
 
-If you want to run OnAir on boot then you might want to look into [nssm](https://nssm.cc/).
-
-# Current Status
-
-The client works flawlessly and the server works as in it'll receive a speaking value. However, I need to still solder everything up for the sign.
+If you want to run OnAir on your windows host on boot then you might want to look into [nssm](https://nssm.cc/).
 
 # Why
 

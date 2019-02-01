@@ -7,11 +7,18 @@ import (
 	"os/signal"
 	"syscall"
 
+	"gobot.io/x/gobot/drivers/gpio"
+	"gobot.io/x/gobot/platforms/raspi"
+
 	log "github.com/sirupsen/logrus"
 )
 
 // Which port to bind to
 var bindPort = "42586"
+
+// Set up gobot adaptor for writing to Raspi pin
+var ada = raspi.NewAdaptor()
+var pin = gpio.NewDirectPinDriver(ada, "7")
 
 // OnAir An exported OnAir object.
 //
@@ -26,13 +33,17 @@ func (o *OnAir) Speaking(speaking bool, ack *bool) error {
 
 	if speaking {
 		log.Info("Speaking detected.")
+
+		pin.DigitalWrite(1)
+	} else {
+		pin.DigitalWrite(0)
 	}
 
 	return nil
 }
 
 func main() {
-	addr, err := net.ResolveTCPAddr("tcp", "localhost:"+bindPort)
+	addr, err := net.ResolveTCPAddr("tcp", "0.0.0.0:"+bindPort)
 	if err != nil {
 		log.Errorf("Error binding to port %s: %s", bindPort, err)
 	}

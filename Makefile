@@ -1,3 +1,8 @@
 build:
 	go build
-	go build -o onair_server.exe ./server/server.go
+
+	export GOOS="linux"
+	export GOARM="6"
+	export GOARCH="arm"
+
+	go build -o onair_server ./server/server.go

@@ -30,17 +30,22 @@ func activityTimer(client *rpc.Client) {
 		for {
 			select {
 			case <-ticker.C:
+				var reply bool
+				var state bool
+
 				if mikeOn && discordUnmuted {
-					var reply bool
+					state = true
+				} else {
+					state = false
+				}
 
-					err := client.Call("OnAir.Speaking", true, &reply)
-					if err != nil {
-						log.Fatal("Could not call Speaking function on OnAir RPC server: ", err)
-					}
+				err := client.Call("OnAir.Speaking", state, &reply)
+				if err != nil {
+					log.Fatal("Could not call Speaking function on OnAir RPC server: ", err)
+				}
 
-					if !reply {
-						log.Error("Did not receive a positive ACK from server.")
-					}
+				if !reply {
+					log.Error("Did not receive a positive ACK from server.")
 				}
 			case <-quit:
 				ticker.Stop()

@@ -25,6 +25,7 @@ func discordEventReceiver() {
 		return
 	}
 
+	log.Info("Discord event receiver active.")
 	defer dg.Close()
 }
 
