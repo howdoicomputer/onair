@@ -9,8 +9,11 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var mikeCtx malgo.AllocatedContext
+var audioReceived bool
+
 // Continuously grab a duration of audio.
-func mikePoll() {
+func mikePoll(device *malgo.Device) {
 	ticker := time.NewTicker(time.Duration(config.Mike.PollDuration) * time.Second)
 	quit := make(chan struct{})
 
@@ -18,7 +21,7 @@ func mikePoll() {
 		for {
 			select {
 			case <-ticker.C:
-				mikeCheck()
+				mikeCheck(device)
 			case <-quit:
 				ticker.Stop()
 				return
@@ -27,9 +30,9 @@ func mikePoll() {
 	}()
 }
 
-// Start the microphone and capture a single second of audio. If the captured audio
-// is empty then we can assume that the microphone is muted.
-func mikeCheck() {
+func initMikeContext() *malgo.AllocatedContext {
+	// For some reason, when I use the Direct Sound backend... microphone activity is picked up regardless.
+	// backend := []malgo.Backend{malgo.BackendDsound}
 	ctx, err := malgo.InitContext(nil, malgo.ContextConfig{}, func(message string) {
 		log.Infof("Log <%v>\n", message)
 	})
@@ -37,11 +40,11 @@ func mikeCheck() {
 		log.Error("Could not initiate malgo context: ", err)
 		os.Exit(1)
 	}
-	defer func() {
-		_ = ctx.Uninit()
-		ctx.Free()
-	}()
 
+	return ctx
+}
+
+func initMikeDevice(ctx *malgo.AllocatedContext) *malgo.Device {
 	deviceConfig := malgo.DefaultDeviceConfig()
 	deviceConfig.Format = malgo.FormatS16
 	deviceConfig.Channels = config.Mike.Channels
@@ -50,7 +53,6 @@ func mikeCheck() {
 	deviceConfig.BufferSizeInMilliseconds = config.Mike.BufferSize
 
 	var capturedSampleCount uint32
-	var audioReceived bool
 	pCapturedSamples := make([]byte, 0)
 
 	sizeInBytes := uint32(malgo.SampleSizeInBytes(deviceConfig.Format))
@@ -80,7 +82,13 @@ func mikeCheck() {
 		os.Exit(1)
 	}
 
-	err = device.Start()
+	return device
+}
+
+// Start the microphone and capture a single second of audio. If the captured audio
+// is empty then we can assume that the microphone is muted.
+func mikeCheck(device *malgo.Device) {
+	err := device.Start()
 	if err != nil {
 		log.Error("Could not start microphone: ", err)
 		os.Exit(1)
@@ -103,5 +111,5 @@ func mikeCheck() {
 		}
 	}
 
-	device.Uninit()
+	device.Stop()
 }
