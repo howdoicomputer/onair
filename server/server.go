@@ -22,8 +22,7 @@ var pin = gpio.NewDirectPinDriver(ada, "7")
 
 // OnAir An exported OnAir object.
 //
-// We don't actually care about the
-// object itself - only the exported
+// We don't actually care about the object itself - only the exported
 // Speaking method.
 type OnAir int
 
