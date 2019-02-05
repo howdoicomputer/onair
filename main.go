@@ -113,10 +113,25 @@ func main() {
 	}
 
 	// Start polling for microphone activity.
-	mikePoll()
+	ctx := initMikeContext()
+	defer func() {
+		_ = ctx.Uninit()
+		ctx.Free()
+	}()
+
+	device := initMikeDevice(ctx)
+	defer func() {
+		device.Uninit()
+	}()
+
+	mikePoll(device)
 
 	// Start waiting for Discord mute/unmute events.
-	discordEventReceiver()
+	dg, err := discordEventReceiver()
+	if err != nil {
+		panic(os.Exit)
+	}
+	defer dg.Close()
 
 	// Continuously send our 'on air' status to the OnAir RPC server.
 	activityTimer(client)

@@ -10,11 +10,11 @@ import (
 )
 
 // Have discordgo handle any incoming events pushed to us by the Discord API.
-func discordEventReceiver() {
+func discordEventReceiver() (*discordgo.Session, error) {
 	dg, err := discordgo.New(config.Discord.Token)
 	if err != nil {
 		log.Error("Error creating Discord session: ", err)
-		return
+		return nil, err
 	}
 
 	dg.AddHandler(muting)
@@ -22,11 +22,11 @@ func discordEventReceiver() {
 	err = dg.Open()
 	if err != nil {
 		log.Error("Error opening Discord session: ", err)
-		return
+		return nil, err
 	}
 
 	log.Info("Discord event receiver active.")
-	defer dg.Close()
+	return dg, nil
 }
 
 // If Discord let's us know that we've been muted or unmuted

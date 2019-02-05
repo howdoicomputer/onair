@@ -34,7 +34,6 @@ To build inside PowerShell,
 go mod vendor
 go build
 
-$env:GO111MODULE="on"
 $env:GOOS="linux"
 $env:GOARCH="arm"
 $env:GOARM="6"
@@ -75,7 +74,7 @@ time="2019-01-21T20:26:37-08:00" level=info msg="Last known Discord muted/unmute
 time="2019-01-21T20:27:39-08:00" level=info msg="Muted on Discord."
 ```
 
-If you want to run OnAir on your windows host on boot then you might want to look into [nssm](https://nssm.cc/).
+If you want to run OnAir on your windows host on boot then you might want to look into [nssm](https://nssm.cc/). However, if you're using nssm you'll need to set the $HOME directory to your natural $HOME for the generated service.
 
 # Why
 
