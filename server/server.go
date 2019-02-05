@@ -32,8 +32,6 @@ func (o *OnAir) Speaking(speaking bool, ack *bool) error {
 	*ack = true
 
 	if speaking {
-		log.Info("Speaking detected.")
-
 		pin.DigitalWrite(1)
 	} else {
 		pin.DigitalWrite(0)
@@ -43,6 +41,10 @@ func (o *OnAir) Speaking(speaking bool, ack *bool) error {
 }
 
 func main() {
+	log.SetFormatter(&log.TextFormatter{
+		FullTimestamp: true,
+	})
+
 	addr, err := net.ResolveTCPAddr("tcp", "0.0.0.0:"+bindPort)
 	if err != nil {
 		log.Errorf("Error binding to port %s: %s", bindPort, err)

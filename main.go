@@ -127,7 +127,11 @@ func main() {
 	mikePoll(device)
 
 	// Start waiting for Discord mute/unmute events.
-	discordEventReceiver()
+	dg, err := discordEventReceiver()
+	if err != nil {
+		panic(os.Exit)
+	}
+	defer dg.Close()
 
 	// Continuously send our 'on air' status to the OnAir RPC server.
 	activityTimer(client)
