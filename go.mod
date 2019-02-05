@@ -2,7 +2,7 @@ module github.com/howdoicomputer/onair
 
 require (
 	github.com/bwmarrin/discordgo v0.19.0
-	github.com/gen2brain/malgo v0.0.0-20181117112449-af6b9a0d538d
+	github.com/gen2brain/malgo v0.0.0-20190202102829-36ec91e75a61
 	github.com/hashicorp/go-multierror v1.0.0 // indirect
 	github.com/mitchellh/go-homedir v1.0.0
 	github.com/pkg/errors v0.8.1 // indirect
