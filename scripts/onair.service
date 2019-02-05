@@ -1,0 +1,10 @@
+[Unit]
+Description=OnAir Server
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/onair_server
+Type=simple
+
+[Install]
+WantedBy=default.target
